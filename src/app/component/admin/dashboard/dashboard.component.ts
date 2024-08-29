@@ -22,8 +22,11 @@ export class AdminDashboardComponent implements OnInit{
   ngOnInit(): void {
     
     this.http.get("http://localhost:4000/admin/getUsers").subscribe((res:any) => {
-      console.log(res);
-      this.users = res.users;
+      
+      setTimeout(() => {
+        this.users = res.users;
+      }, 1300);
+
     })
 
   }

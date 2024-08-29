@@ -4,8 +4,16 @@
   </div>
 </header>
 <main class="mt-10 px-4 sm:px-6 lg:px-8">
-  <div class="mx-auto max-w-3xl text-center">
-    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Welcome, <span class="text-indigo-600 capitalize">{{data.name}}</span></h2>
+  <div class="mx-auto max-w-3xl text-center transition-opacity duration-500 ease-in-out">
+    @if(data.email) {
+    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Welcome, <span
+        class="text-indigo-600 capitalize">{{data.name}}</span></h2>
     <h4 class="text-base font-light text-gray-600">Email: <span class="text-gray-800">{{data.email}}</span></h4>
+    }@else {
+      <div class="flex justify-center items-center h-64 transition-opacity duration-500 ease-in-out">
+        <div class="border-gray-300 h-24 w-24 animate-spin rounded-full border-8 border-t-blue-600"></div>
+      </div>
+    }
   </div>
+
 </main>

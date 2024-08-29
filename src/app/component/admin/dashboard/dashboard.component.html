@@ -7,6 +7,7 @@
   <div class="mx-auto max-w-3xl text-center">
     <h1 class="text-2xl font-bold text-gray-800 mb-4">List of Users</h1>
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
+
       <table class="min-w-full">
         <thead class="bg-gray-200">
           <tr>
@@ -15,12 +16,30 @@
           </tr>
         </thead>
         <tbody>
+          @if(users) {
           <tr *ngFor="let user of users" class="border-b">
             <td class="px-6 py-4 text-gray-800">{{user.name}}</td>
             <td class="px-6 py-4 text-gray-600">{{user.email}}</td>
           </tr>
+          }
+          @else {
+
+          <tr class="h-24 text-center">
+            <td colspan="2">
+              <div class="flex gap-2 justify-center">
+                <div class="w-5 h-5 rounded-full animate-pulse bg-blue-600"></div>
+                <div class="w-5 h-5 rounded-full animate-pulse bg-blue-600"></div>
+                <div class="w-5 h-5 rounded-full animate-pulse bg-blue-600"></div>
+              </div>
+            </td>
+          </tr>
+
+          }
         </tbody>
       </table>
+
+
+
     </div>
   </div>
 </main>
