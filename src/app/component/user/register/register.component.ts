@@ -15,9 +15,11 @@ export class RegisterComponent {
 
   constructor( private http: HttpClient ){
     this.regObj = {
+      _id: "",
       name : "",
       password : "",
-      email : ""
+      email : "",
+      profilePicture:""
     }
   }
 

@@ -17,9 +17,11 @@ export class LoginComponent {
 
   constructor(private http: HttpClient, private router: Router ) {
     this.loginObj = {
+      _id:"",
       name: "",
       password: "",
-      email: ""
+      email: "",
+      profilePicture: ""
     }
   }
 

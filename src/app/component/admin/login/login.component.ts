@@ -22,8 +22,9 @@ export class AdminLoginComponent {
 
   onLogin(){
     this.http.post("http://localhost:4000/admin/login", this.adminCred).subscribe((res: any) => {
-      if (res.Auth) {
-        console.log(res.Auth);
+      if (res.token) {
+        console.log(res.token);
+        localStorage.setItem('admin', res.token)
         this.router.navigateByUrl("/admin/adminDashboard")
       }
       else{

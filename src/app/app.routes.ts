@@ -6,6 +6,10 @@ import { LayoutComponent } from './component/user/layout/layout.component';
 import { DashboardComponent } from './component/user/dashboard/dashboard.component';
 import { AdminDashboardComponent } from './component/admin/dashboard/dashboard.component';
 import { AdminLayoutComponent } from './component/admin/layout/layout.component';
+import { EditProfileComponent } from './component/user/edit-profile/edit-profile.component';
+import { ChangePasswordComponent } from './component/user/change-password/change-password.component';
+import { UserDetailsComponent } from './component/admin/user-details/user-details.component';
+import { EditUserComponent } from './component/admin/edit-user/edit-user.component';
 
 export const routes: Routes = [
   { path:"", redirectTo:"login", pathMatch:'full' },
@@ -14,12 +18,16 @@ export const routes: Routes = [
   { path: "adminLogin", component: AdminLoginComponent },
   { path: "", component: LayoutComponent,
     children: [
-      { path: "dashboard", component: DashboardComponent }
+      { path: "dashboard", component: DashboardComponent },
+      { path: "editProfile", component: EditProfileComponent },
+      { path: "changePassword", component: ChangePasswordComponent }
     ]
    },
    { path: "admin", component: AdminLayoutComponent,
     children: [
-      { path: "adminDashboard", component: AdminDashboardComponent }
+      { path: "adminDashboard", component: AdminDashboardComponent },
+      { path: "userDetails/:id", component: UserDetailsComponent },
+      { path: "editUser/:id", component: EditUserComponent }
     ]
     }
 ];

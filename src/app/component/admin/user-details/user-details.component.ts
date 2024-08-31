@@ -1,67 +1,55 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject, OnInit } from '@angular/core';
 import { User } from '../../../Model/UserCredentials';
 import { CommonModule } from '@angular/common';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { ProfileUploadService } from '../../../services/profile-upload.service';
 import { UserAuthService } from '../../../services/user-auth.service';
-
-
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { AdminAuthService } from '../../../services/admin-auth.service';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-user-details',
   standalone: true,
-  imports: [
-    CommonModule,
-    FontAwesomeModule,
-  ],
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  imports: [CommonModule,FontAwesomeModule,RouterLink],
+  templateUrl: './user-details.component.html',
+  styleUrl: './user-details.component.css'
 })
-export class DashboardComponent implements OnInit{
+export class UserDetailsComponent implements OnInit {
 
-  faUpload = faUpload;
-  faPencilAlt = faPencilAlt;
-  isUploading: boolean = false; 
+  faPencilAlt = faPencilAlt
+  faUpload = faUpload
+  isUploading: boolean = false;
 
-  @ViewChild('fileInput') fileInput!: ElementRef; 
+  data:User = { _id:'', email: '', name: '', password: '' , profilePicture: '' }
 
-  data: User = { _id:'', email: '', name: '', password: '' , profilePicture: ''};
-
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor ( private http: HttpClient ) {}
 
   profileUploadService = inject(ProfileUploadService);
-  userAuthService = inject(UserAuthService);
-  
+  adminAuthService = inject(AdminAuthService);
+  route = inject(ActivatedRoute)
+
   ngOnInit(): void {
     
 
-    const token: string = localStorage.getItem('user') ?? '';
-    console.log(token);
-    
+    const token: string = localStorage.getItem('admin') ?? '';
 
-    this.userAuthService.getUser(token).subscribe((res:any) => {
+  
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log(id);
 
+    this.adminAuthService.getUser(token,id!).subscribe((res:any) => {
+      
       setTimeout(() => {
-        this.data.email = res.email;
-        this.data.name = res.name;
-        this.data.profilePicture = res.profilePicture;
-        
-      }, 1000);
-      
-      
+        this.data = res.user;
+      }, 0);
+
     })
 
   }
-
-  //  // Method to trigger file input click
-  //  triggerFileInput(): void {
-  //   this.fileInput.nativeElement.click()
-  // }
 
   // Handle the file upload
   onFileSelected(event: any): void {
@@ -74,7 +62,7 @@ export class DashboardComponent implements OnInit{
 
   uploadFile(file: File): void {
 
-    const token: string = localStorage.getItem('user') as string;
+    const token: string = localStorage.getItem('admin') as string;
 
     const storage = getStorage();
     const storageRef = ref(storage, 'profile-pictures/' + file.name);
@@ -95,7 +83,7 @@ export class DashboardComponent implements OnInit{
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           this.isUploading = false;
       
-          this.profileUploadService.uploadToDb(token,downloadURL).subscribe( res => {
+          this.profileUploadService.uploadToDbAdmin( token, this.data._id, downloadURL ).subscribe( res => {
             
             // this.data.profilePicture = downloadURL;
             console.log(res) 
@@ -108,6 +96,5 @@ export class DashboardComponent implements OnInit{
       }
     );
   }
-
 
 }

@@ -3,29 +3,48 @@
     <h1 class="text-3xl font-bold tracking-tight text-gray-900">Admin Dashboard</h1>
   </div>
 </header>
+
 <main class="mt-10 px-4 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-3xl text-center">
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">List of Users</h1>
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-2xl font-bold text-gray-800">List of Users</h1>
+      <a [routerLink]="['/register']" class="bg-gray-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-gray-900 focus:outline-none">
+        Add User
+      </a>
+    </div>
+    <div class="bg-white shadow-md rounded-lg overflow-hidden mb-8"> <!-- Added mb-8 for margin bottom -->
       <table class="min-w-full">
         <thead class="bg-gray-200">
           <tr>
+            <th class="text-center px-6 py-3 text-gray-700">Profile Picture</th>
             <th class="text-center px-6 py-3 text-gray-700">Name</th>
             <th class="text-center px-6 py-3 text-gray-700">Email</th>
+            <th class="text-center px-6 py-3 text-gray-700">Manage</th>
           </tr>
         </thead>
         <tbody>
           @if(users) {
-          <tr *ngFor="let user of users" class="border-b">
+
+          @for(user of users; track $index){
+          <tr [routerLink]="['/admin/userDetails', user._id]" class="border-b hover:bg-gray-50">
+            <td class="px-6 py-4">
+              <img *ngIf="user.profilePicture" [src]="user.profilePicture" alt="Profile Picture"
+                class="w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full object-cover mx-auto shadow-sm">
+            </td>
             <td class="px-6 py-4 text-gray-800">{{user.name}}</td>
             <td class="px-6 py-4 text-gray-600">{{user.email}}</td>
+            <td>
+              <a [routerLink]="['/admin/editUser', user._id]"><fa-icon [icon]="faPencilAlt" class="w-4 h-4 m-3"></fa-icon></a>
+              <button (click)="openModal($index,$event)" [attr.id]="'deleteButton'+$index" ><fa-icon [icon]="faTrashAlt" class="w-4 h-4 m-3"></fa-icon></button>
+              <app-delete-modal *ngIf="activeModal === $index" [id]="user._id" (close)="closeModal()" ></app-delete-modal>
+            </td>
           </tr>
+        }
+
           }
           @else {
-
           <tr class="h-24 text-center">
-            <td colspan="2">
+            <td colspan="4">
               <div class="flex gap-2 justify-center">
                 <div class="w-5 h-5 rounded-full animate-pulse bg-blue-600"></div>
                 <div class="w-5 h-5 rounded-full animate-pulse bg-blue-600"></div>
@@ -33,12 +52,9 @@
               </div>
             </td>
           </tr>
-
           }
         </tbody>
       </table>
-
-
 
     </div>
   </div>

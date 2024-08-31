@@ -1,6 +1,6 @@
 <header class="bg-white shadow">
   <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900">User Profile</h1>
   </div>
 </header>
 
@@ -8,7 +8,8 @@
   <div class="mx-auto max-w-3xl text-center transition-opacity duration-500 ease-in-out">
     @if(data.email) {
     <div class="relative inline-block">
-      <div *ngIf="isUploading" class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full bg-gray-100 mx-auto flex items-center justify-center">
+      <div *ngIf="isUploading"
+        class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full bg-gray-100 mx-auto flex items-center justify-center">
         <div class="flex flex-col items-center justify-center">
           <p class="text-xs text-gray-500 mb-2">Uploading...</p>
           <div class="flex gap-2 items-center">
@@ -31,17 +32,19 @@
       </button>
     </div>
 
-    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Welcome, <span class="text-indigo-600 capitalize">{{ data.name }}</span></h2>
+    <h2 class="text-3xl font-semibold text-gray-800 mb-4"><span class="text-indigo-600 capitalize">{{ data.name
+        }}</span></h2>
     <h4 class="text-base font-light text-gray-600 mb-4">Email: <span class="text-gray-800">{{ data.email }}</span></h4>
 
-    <a href="/editProfile" class="text-white font-normal text-sm bg-gray-500 rounded-xl px-3 py-1 hover:bg-gray-900 focus:outline-none"> Edit Profile </a>
+    <a [routerLink]="['/admin/editUser', data._id]"
+      class="text-white font-normal text-sm bg-gray-500 rounded-xl px-3 py-1 hover:bg-gray-900 focus:outline-none"> Edit
+      Profile </a>
 
     <!-- Profile Picture Upload Section -->
     <div *ngIf="!data.profilePicture && !isUploading" class="flex flex-col items-center">
-      <p class="mb-4 text-ellipsis text-red-700">You haven't uploaded your Profile Picture Yet!</p>
+      <p class="m-4 text-ellipsis text-red-700">User haven't uploaded their Profile Picture</p>
       <label for="profile-picture" class="cursor-pointer mb-4">
         <div class="relative w-24 h-24 rounded-full border-4 border-gray-300 overflow-hidden">
-          <!-- Default Upload Icon State -->
           <input #fileInput type="file" id="profile-picture" (change)="onFileSelected($event)" accept="image/*"
             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
           <div class="absolute inset-0 flex justify-center items-center bg-gray-100 rounded-full flex-col">
@@ -51,6 +54,7 @@
         </div>
       </label>
     </div>
+
     } @else {
     <!-- Loading Spinner State -->
     <div class="flex justify-center items-center h-64 transition-opacity duration-500 ease-in-out">
