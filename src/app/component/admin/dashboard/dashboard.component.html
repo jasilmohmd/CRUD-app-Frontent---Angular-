@@ -19,6 +19,14 @@
           Add User
         </a>
       </div>
+
+      <!-- Search Field -->
+      <div class="mb-6">
+        <input type="text" placeholder="Search Users..." [(ngModel)]="searchQuery"
+  class="w-full py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
+  (input)="filterUsers()">
+      </div>
+
       <div class="bg-white shadow-md rounded-lg overflow-hidden mb-8">
         <table class="min-w-full">
           <thead class="bg-gray-200">

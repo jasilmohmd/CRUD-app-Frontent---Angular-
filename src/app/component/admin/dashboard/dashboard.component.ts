@@ -10,14 +10,15 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { DeleteModalComponent } from '../modals/delete-modal/delete-modal.component';
 import * as AdminActions from '../../../states/admin/admin.actions'
 import * as AdminSelectors from '../../../states/admin/admin.selector'
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule,RouterLink,FontAwesomeModule,DeleteModalComponent,AsyncPipe],
+  imports: [CommonModule,RouterLink,FontAwesomeModule,DeleteModalComponent,AsyncPipe,FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -32,6 +33,9 @@ export class AdminDashboardComponent implements OnInit{
   users!: Observable<User[]>
   error!: Observable<string | null>
 
+  filteredUsers: User[] = []; // Filtered users to be displayed
+  searchQuery: string = ''; // Search query input
+
   adminAuthService = inject(AdminAuthService);
   route = inject(ActivatedRoute);
 
@@ -45,7 +49,18 @@ export class AdminDashboardComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.filterUsers(); // Initial filter (or reset)
+  }
 
+  filterUsers(): void {
+    this.users = this.store.select(AdminSelectors.selectAllUsers).pipe(
+      map(users => 
+        users.filter(user =>
+          user.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          user.email.toLowerCase().includes(this.searchQuery.toLowerCase())
+        )
+      )
+    );
   }
 
   openModal(index: number, event: Event): void {

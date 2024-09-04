@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { User } from '../Model/UserCredentials';
 
 
 @Injectable({
@@ -8,6 +9,10 @@ import { Injectable } from '@angular/core';
 export class UserAuthService {
 
   constructor( private http: HttpClient ) { }
+
+  userLogin(loginObj:User){
+    return this.http.post("http://localhost:4000/user/login", loginObj)
+  }
     
   getUser(token: string){
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
